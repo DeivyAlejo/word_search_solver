@@ -2,28 +2,30 @@
 Word Search Solver
 The purpose of this code is to find a word in a word search game.
 Author: Deivy Munoz
-Brief explanaition: This code is divided into three steps.
-    1. Find all the coincidents of the first letter in the word search board.
-    2. Find a coincidence of the sencond letter next to one of the coincidents for the first letter.
-    3. Once the first and the second letter were found, compare the rest of the letters of the words with the letters of the word search board
-        in the correct direction.
+Brief explanation: This code is divided into three steps.
+    1. Find all the occurrences of the first letter in the word search board.
+    2. Find a match for the second letter next to one of the occurrences of the first letter.
+    3. Once the first and second letters are found, compare the rest of the letters of the word with the letters in the word search board
+       in the correct direction.
 
-    Note: If there are mulriple coincidences of the first letter the code will compare until there are no more or until if finds the word. 
-
+    Note: If there are multiple occurrences of the first letter, the code will compare until there are no more or until it finds the word.
 """
 
 import queue
 
 def find_next_letter(direction, next_letter_location, word_search, word, letter_position, letters_location):
     """
-    This function returns the location of the 3th letter and foward.
-    direction: list of two positions ex [o,1]
+    This function returns the location of the 3rd letter and onwards.
+    direction: list of two positions, e.g., [0, 1]
     next_letter_location: the position of the next letter to compare
     word_search: word search board
     word: the word to search in the word search board
     letter_position: letter position in the word to compare with next_letter_location
     letters_location: list of the locations of the found letters that match
     """
+    if next_letter_location[0] < 0 or (next_letter_location[0] > len(word_search) or next_letter_location[0] > len(word_search[1])) or next_letter_location[1] < 0 or (next_letter_location[1] > len(word_search) or next_letter_location[1] > len(word_search[1])):
+        return False 
+
     if word_search[next_letter_location[0]][next_letter_location[1]] == word[letter_position-1]:
         letters_location.append(next_letter_location)
         if letter_position >= len(word):
@@ -33,8 +35,7 @@ def find_next_letter(direction, next_letter_location, word_search, word, letter_
 
     next_letter_location = [next_letter_location[0]+direction[0],next_letter_location[1]+direction[1]]
 
-    if next_letter_location[0] < 0 or (next_letter_location[0] > len(word_search) or next_letter_location[0] > len(word_search[1])) or next_letter_location[1] < 0 or (next_letter_location[1] > len(word_search) or next_letter_location[1] > len(word_search[1])):
-        return False 
+    
     
     # print(lettersLocation)
     return find_next_letter(direction, next_letter_location, word_search, word, letter_position+1, letters_location)
@@ -42,15 +43,19 @@ def find_next_letter(direction, next_letter_location, word_search, word, letter_
 
 def get_direction(first_letter_location, second_letter_location2):
     """
-    get_direction returns the direction where the word supose to be based on the location of first and second letter.
-    
+    Returns the direction where the word is supposed to be based on the location of the first and second letters.
+    first_letter_location: location of the first letter
+    second_letter_location: location of the second letter
     """
     direction = [second_letter_location2[0]-first_letter_location[0],second_letter_location2[1]-first_letter_location[1]]
     return direction
 
 def generate_points(coordinate, word_search_size):
     """
-    generate_poinst returns the valid point locations around the firts letter matches. If the point is outside the boundaries, it wont be returned.
+    Returns the valid point locations around the first letter matches. 
+    If the point is outside the boundaries, it won't be returned.
+    coordinate: current coordinate to generate points around
+    word_search_size: size of the word search board
     """
     point_list = []
     point_list.append([coordinate[0]-1,coordinate[1]-1])
@@ -71,7 +76,9 @@ def generate_points(coordinate, word_search_size):
 
 def lookForWord(word_search, word):
     """
-
+    Looks for a word in the word search board.
+    word_search: the word search board
+    word: the word to find in the board
     """
     word_search_size = [len(word_search),len(word_search[1])]
     first_letter_q = queue.Queue()
@@ -109,20 +116,18 @@ def lookForWord(word_search, word):
     return False
     
 if __name__ == "__main__":
-    word_search = [ ['S','U','N','W','A','N','P','U','A'],
-                    ['U','S','B','A','E','I','P','L','H'],
-                    ['N','H','T','T','W','C','L','S','O'],
-                    ['B','E','N','E','U','E','A','A','T'],
-                    ['L','L','W','R','R','D','Y','N','N'],
-                    ['O','L','N','B','O','T','S','D','F'],
-                    ['C','A','M','B','E','A','C','H','U'],
-                    ['K','U','W','A','V','E','S','C','N'],
-                    ['P','I','N','E','A','P','P','L','E']]
+    word_search = [ ['J','S','O','L','U','T','I','S'],
+                    ['S','U','N','A','R','U','U','A'],
+                    ['N','E','P','T','U','N','E','T'],
+                    ['S','O','N','I','E','I','S','U'],
+                    ['R','C','E','V','T','R','E','R'],
+                    ['A','H','T','R','A','E','S','N'],
+                    ['M','M','E','R','C','U','R','Y']]
 
     words = ['SUN', 'SUNBLOCK', 'PLAY', 'WAVES', 'HOT', 'SAND', 'FUN', 'PINEAPPLE', 
     'WATER', 'UMBRELLA', 'SHELL', 'BEACH', 'FUN']
 
-    word = 'SHELL'
+    word = 'EARTH'
     print(lookForWord(word_search, word))
 
 
