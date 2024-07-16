@@ -7,6 +7,7 @@ Deivy Munoz
 
 ## Video
 https://youtu.be/PPkMyLJM1gI
+
 In this video, I show how I deployed the code to AWS. I used Lambda, Amplify, and API Gateway.
 
 ## Brief Explanation
